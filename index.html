@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Multi-Unit Converter Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen dark:bg-gray-900 dark:text-gray-200 transition-colors duration-200">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header with Theme Toggle -->
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">Smart Unit Converter
+                </h1>
+                <p class="text-gray-600 dark:text-gray-400">Convert between multiple units instantly</p>
+            </div>
+            <button id="theme-toggle" style="opacity: 0%;"
+                class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+                <i class="fas fa-moon dark:hidden"></i>
+                <i class="fas fa-sun hidden dark:block"></i>
+            </button>
+        </header>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+            <!-- Category Tabs -->
+            <div class="flex overflow-x-auto bg-gray-50 dark:bg-gray-700 transition-colors duration-200">
+                <button class="category-btn active px-6 py-3 font-medium text-sm whitespace-nowrap"
+                    data-category="length">
+                    <i class="fas fa-ruler-combined mr-2"></i>Length
+                </button>
+                <button class="category-btn px-6 py-3 font-medium text-sm whitespace-nowrap" data-category="weight">
+                    <i class="fas fa-weight-scale mr-2"></i>Weight
+                </button>
+                <button class="category-btn px-6 py-3 font-medium text-sm whitespace-nowrap"
+                    data-category="temperature">
+                    <i class="fas fa-temperature-three-quarters mr-2"></i>Temperature
+                </button>
+                <button class="category-btn px-6 py-3 font-medium text-sm whitespace-nowrap" data-category="volume">
+                    <i class="fas fa-glass-water mr-2"></i>Volume
+                </button>
+                <button class="category-btn px-6 py-3 font-medium text-sm whitespace-nowrap" data-category="time">
+                    <i class="fas fa-clock mr-2"></i>Time
+                </button>
+            </div>
+
+            <!-- Converter Section -->
+            <div class="p-6">
+                <!-- Current Category Display -->
+                <div class="flex items-center mb-6">
+                    <h2 id="current-category" class="text-xl font-semibold text-gray-800 dark:text-gray-200">Length</h2>
+                    <span
+                        class="ml-2 px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 rounded-full text-xs">Active</span>
+                </div>
+
+                <!-- Input Section -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="space-y-2">
+                        <label for="input-value"
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300">Input Value</label>
+                        <div class="relative">
+                            <input type="number" id="input-value"
+                                class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200"
+                                placeholder="Enter value">
+                            <div id="input-error" class="error-message hidden">Please enter a valid number</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label for="from-unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">From
+                            Unit</label>
+                        <select id="from-unit"
+                            class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200">
+                            <!-- Options will be populated by JavaScript -->
+                        </select>
+                    </div>
+
+                    <div class="flex items-end">
+                        <button id="swap-units"
+                            class="swap-btn w-full px-4 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-all duration-300">
+                            <i class="fas fa-arrow-right-arrow-left"></i> Swap Units
+                        </button>
+                    </div>
+                </div>
+
+                <div class="space-y-2 mb-6">
+                    <label for="to-unit" class="block text-sm font-medium text-gray-700 dark:text-gray-300">To
+                        Unit</label>
+                    <select id="to-unit"
+                        class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-colors duration-200">
+                        <!-- Options will be populated by JavaScript -->
+                    </select>
+                </div>
+
+                <!-- Results Section -->
+                <div id="results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Results will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Conversions and History -->
+        <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Recent Conversions -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                <div class="px-6 py-4 border-b dark:border-gray-700">
+                    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200"><i
+                            class="fas fa-history mr-2"></i>Recent Conversions</h2>
+                </div>
+                <div id="recent-conversions" class="p-4">
+                    <p class="text-gray-500 dark:text-gray-400 text-center py-4">Your recent conversions will appear
+                        here</p>
+                </div>
+            </div>
+
+            <!-- Conversion History -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transition-colors duration-200">
+                <div class="px-6 py-4 border-b dark:border-gray-700 flex justify-between items-center">
+                    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200"><i
+                            class="fas fa-list-check mr-2"></i>Conversion History</h2>
+                    <button id="clear-history"
+                        class="text-sm text-red-500 hover:text-red-700 dark:hover:text-red-400 transition-colors">
+                        <i class="fas fa-trash mr-1"></i>Clear
+                    </button>
+                </div>
+                <div id="conversion-history" class="divide-y dark:divide-gray-700 max-h-96 overflow-y-auto">
+                    <p class="text-gray-500 dark:text-gray-400 text-center py-4">Your conversion history will appear
+                        here</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js">
+
+    </script>
+</body>
+
+</html>
